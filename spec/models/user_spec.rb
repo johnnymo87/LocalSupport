@@ -63,7 +63,7 @@ describe User do
   # http://stackoverflow.com/questions/12125038/where-do-i-confirm-user-created-with-factorygirl
   describe '#promote_new_user' do
 
-    let(:usr) { FactoryGirl.create(:user, ) }
+    let(:usr) { FactoryGirl.create(:user, confirmed_at: nil) }
     let(:mismatch_org) { FactoryGirl.create(:organization, email: 'info@other_charity.org') }
 
     #it 'does confirm! work?' do
