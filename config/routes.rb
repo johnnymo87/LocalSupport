@@ -11,10 +11,10 @@ LocalSupport::Application.routes.draw do
   resources :orphans, only: [:index, :create]
   resources :users, only: [:index, :update]
 
-  resources :pages
+  #resources :pages
 
   resources :organizations do
-    resources :users
+    #resources :users
   end
 
   # so that static pages are linked directly instead of via /pages/:id
