@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
+<<<<<<< HEAD
     #sign_in = Regexp.new '/users/sign_in'
     #sign_up = Regexp.new '/users/sign_up'
     #sign_password = Regexp.new '/users/password'
