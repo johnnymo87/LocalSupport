@@ -213,7 +213,7 @@ describe OrganizationsController do
     context "while signed in" do
       before(:each) do
         user = double("User")
-        request.env['warden'].stub :authenticate! => user
+        @request.env['warden'].stub :authenticate! => user
         controller.stub(:current_user).and_return(user)
         Organization.stub(:new) { double_organization }
       end
