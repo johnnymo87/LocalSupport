@@ -15,6 +15,12 @@ FactoryGirl.define do
     name 'About Us'
     permalink 'about'
     content 'abc123'
+
+    factory :page_404 do
+      name 'page not found'
+      permalink '404'
+      content 'Turn your head and cough.'
+    end
   end
   factory :user do
     email "jj@example.com"
