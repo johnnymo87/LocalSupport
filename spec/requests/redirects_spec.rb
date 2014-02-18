@@ -3,6 +3,7 @@ require 'spec_helper'
 require './spec/support/request_spec_helpers'
 include RequestSpecHelpers
 routes = all_routes
+#puts routes
 
 describe 'Redirects', :type => :requests do
   let(:routes) { all_routes }
@@ -12,16 +13,14 @@ describe 'Redirects', :type => :requests do
     user.save!
     page_404.save!
   end
-  #it 'lets find the main object' do
-  #  puts 'hi'
-  #  debugger
-  #  puts 'bye'
+
+  #routes.each do |route|
+  #  it "#{route[:verb]} #{route[:name]}" do
+  #    puts 'hi'
+  #    debugger
+  #    request_via_redirect route[:verb], route[:name], { 'user[email]' => user.email, 'user[password]' => user.password }
+  #  end
   #end
-  routes.each do |route|
-    it "#{route[:verb]} #{route[:name]}" do
-      request_via_redirect route[:verb], route[:name]
-    end
-  end
 
   #it 'get new user session' do
   #  @route = { name: 'new_user_session_path', verb: 'get' }
@@ -43,7 +42,8 @@ describe 'Redirects', :type => :requests do
   #it 'get user session path' do
   #  request_via_redirect :get, user_session_path
   #end
-  #it 'post user session path' do
-  #  request_via_redirect :post, user_session_path, { 'user[email]' => user.email, 'user[password]' => user.password }
-  #end
+
+  it 'post user session path' do
+    request_via_redirect :post, user_session_path, { 'user[email]' => user.email, 'user[password]' => user.password }
+  end
 end

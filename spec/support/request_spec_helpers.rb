@@ -28,7 +28,7 @@ module ActionDispatch
           redirect_count += 1
           raise 'redirected more than 5 times, check for infinite redirects.' if redirect_count > 5
         end
-        status
+        puts status
       end
     end
   end
