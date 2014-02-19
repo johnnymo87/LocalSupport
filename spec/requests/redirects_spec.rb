@@ -1,159 +1,147 @@
 require 'spec_helper'
 
-#require './spec/support/request_spec_helpers'
-#include RequestSpecHelpers
-#routes = all_routes
-#puts routes
-
 describe 'Redirects', :type => :requests do
-  after(:all) { unchecked_routes.should be_empty, "expected empty array, instead got #{unchecked_routes.inspect}" }
   let(:user) { FactoryGirl.create :user }
-  #let(:page_404) { FactoryGirl.create :page_404 }
-  #let(:routes) { all_routes }
 
   it 'get /users/sign_in' do
-    get_via_redirect new_user_session_path
+    get_via_redirect '/users/sign_in', {}
   end
 
   it 'post /users/sign_in' do
-    post_via_redirect user_session_path, { 'user[email]' => user.email, 'user[password]' => user.password }
+    post_via_redirect '/users/sign_in', { 'user[email]' => user.email, 'user[password]' => user.password }
   end
 
-  it 'delete /users/sign_out'
+  it 'delete /users/sign_out' do
+    delete_via_redirect '/users/sign_out', {}
+  end
 
-  it 'get /users/password'
+  it 'post /users/password' do
+    post_via_redirect '/users/password', {}
+  end
 
-  it 'get /users/password/new'
+  it 'get /users/password/new' do
+    get_via_redirect '/users/password/new', {}
+  end
 
-  it 'get /users/password/edit'
+  it 'get /users/password/edit' do
+    get_via_redirect '/users/password/edit', {}
+  end
 
-  it 'put /users/password'
+  it 'put /users/password' do
+    put_via_redirect '/users/password', {}
+  end
 
-  it 'get /users/cancel'
+  it 'get /users/cancel' do
+    get_via_redirect '/users/cancel', {}
+  end
 
-  it 'post /users'
+  it 'post /users' do
+    post_via_redirect '/users', {}
+  end
 
-  it 'get /users/sign_up'
+  it 'get /users/sign_up' do
+    get_via_redirect '/users/sign_up', {}
+  end
 
-  it 'get /users/edit'
+  it 'get /users/edit' do
+    get_via_redirect '/users/edit', {}
+  end
 
-  it 'put /users'
+  it 'put /users' do
+    put_via_redirect '/users', {}
+  end
 
-  it 'delete /users'
+  it 'delete /users' do
+    delete_via_redirect '/users', {}
+  end
 
-  it 'post /users/confirmation'
+  it 'post /users/confirmation' do
+    post_via_redirect '/users/confirmation', {}
+  end
 
-  it 'post /users/password'
+  it 'get /users/confirmation/new' do
+    get_via_redirect '/users/confirmation/new', {}
+  end
 
-  it 'post /users/password'
+  it 'get /users/confirmation' do
+    get_via_redirect '/users/confirmation', {}
+  end
 
-  it 'post /users/password'
+  it 'get /contributors' do
+    get_via_redirect '/contributors', {}
+  end
 
-  it 'post /users/password'
+  it 'get /organizations/search' do
+    get_via_redirect '/organizations/search', {}
+  end
 
-  it 'post /users/password'
+  it 'put /organizations/:organization_id/user/:id' do
+    put_via_redirect '/organizations/:organization_id/user/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'get /orphans' do
+    get_via_redirect '/orphans', {}
+  end
 
-  it 'post /users/password'
+  it 'post /orphans' do
+    post_via_redirect '/orphans', {}
+  end
 
-  it 'post /users/password'
+  it 'get /users' do
+    get_via_redirect '/users', {}
+  end
 
-  it 'post /users/password'
+  it 'put /users/:id' do
+    put_via_redirect '/users/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'get /organizations' do
+    get_via_redirect '/organizations', {}
+  end
 
-  it 'post /users/password'
+  it 'post /organizations' do
+    post_via_redirect '/organizations', {}
+  end
 
-  it 'post /users/password'
+  it 'get /organizations/new' do
+    get_via_redirect '/organizations/new', {}
+  end
 
-  it 'post /users/password'
+  it 'get /organizations/:id/edit' do
+    get_via_redirect '/organizations/:id/edit', {}
+  end
 
-  it 'post /users/password'
+  it 'get /organizations/:id' do
+    get_via_redirect '/organizations/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'put /organizations/:id' do
+    put_via_redirect '/organizations/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'delete /organizations/:id' do
+    delete_via_redirect '/organizations/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'get /:id' do
+    get_via_redirect '/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'put /:id' do
+    put_via_redirect '/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'delete /:id' do
+    delete_via_redirect '/:id', {}
+  end
 
-  it 'post /users/password'
+  it 'post /cookies/allow' do
+    post_via_redirect '/cookies/allow', {}
+  end
 
-  it 'post /users/password'
+  it 'get /' do
+    get_via_redirect '/', {}
+  end
 
-  [ "", "", "", "", "", "", "", "", "", "", "get /users/confirmation/new", "get /users/confirmation", "get /contributors", "get /organizations/search", "put /organizations/:organization_id/user/:id", "get /orphans", "post /orphans", "get /users", "put /users/:id", "get /organizations", "post /organizations", "get /organizations/new", "get /organizations/:id/edit", "get /organizations/:id", "put /organizations/:id", "delete /organizations/:id", "get /:id", "put /:id", "delete /:id", "post /cookies/allow", "get /"]
-
-
-  #it 'get new user session' do
-  #  @route = { name: 'new_user_session_path', verb: 'get' }
-  #  request_via_redirect :get, user_session_path
-  #end
-  #
-
-  #it 'each route' do
-  #  #puts all_routes
-  #  all_routes.each do |route|
-  #    print "#{route[:verb]} #{route[:name]} "
-  #    request_via_redirect route[:verb], route[:name]
-  #    print "#{response.code}\n"
-  #    all_routes.pop route
-  #  end
-  #  raise "untested routes: #{all_routes}" unless all_routes.empty?
-  #end
-
-  #before(:each) do
-  #  #puts 'hi'
-  #  #debugger
-  #  user.save!
-  #  page_404.save!
-  #end
-  #rake_routes.each do |route|
-  #  it "#{route[:verb]} #{route[:name]}" do
-  #    #puts 'hi'
-  #    #debugger
-  #    request_via_redirect route[:verb], eval(route[:name]), route[:params]
-  #  end
-  #end
-
-  #let(:routes) { [
-  #    {:name=>"new_user_session_path", :verb=>"get"},
-  #    {:name=>"user_session_path", :verb=>"post", :params=>{ 'user[email]' => user.email, 'user[password]' => user.password }},
-  #    {:name=>"destroy_user_session_path", :verb=>"delete"},
-  #    {:name=>"user_password_path", :verb=>"post"},
-  #    {:name=>"new_user_password_path", :verb=>"get"},
-  #    {:name=>"edit_user_password_path", :verb=>"get"},
-  #    {:name=>"edit_user_password_path", :verb=>"put"},
-  #    {:name=>"cancel_user_registration_path", :verb=>"get"},
-  #    {:name=>"user_registration_path", :verb=>"post"},
-  #    {:name=>"new_user_registration_path", :verb=>"get"},
-  #    {:name=>"edit_user_registration_path", :verb=>"get"},
-  #    {:name=>"edit_user_registration_path", :verb=>"put"},
-  #    {:name=>"edit_user_registration_path", :verb=>"delete"},
-  #    {:name=>"user_confirmation_path", :verb=>"post"},
-  #    {:name=>"new_user_confirmation_path", :verb=>"get"},
-  #    {:name=>"new_user_confirmation_path", :verb=>"get"},
-  #    {:name=>"contributors_path", :verb=>"get"},
-  #    {:name=>"organizations_search_path", :verb=>"get"},
-  #    {:name=>"organizations_search_path", :verb=>"put"},
-  #    {:name=>"orphans_path", :verb=>"get"},
-  #    {:name=>"orphans_path", :verb=>"post"},
-  #    {:name=>"users_path", :verb=>"get"},
-  #    {:name=>"user_path", :verb=>"put"},
-  #    {:name=>"organizations_path", :verb=>"get"},
-  #    {:name=>"organizations_path", :verb=>"post"},
-  #    {:name=>"new_organization_path", :verb=>"get"},
-  #    {:name=>"edit_organization_path", :verb=>"get"},
-  #    {:name=>"organization_path", :verb=>"get"},
-  #    {:name=>"organization_path", :verb=>"put"},
-  #    {:name=>"organization_path", :verb=>"delete"},
-  #    {:name=>"page_path", :verb=>"get"},
-  #    {:name=>"page_path", :verb=>"put"},
-  #    {:name=>"page_path", :verb=>"delete"},
-  #    {:name=>"cookies_allow_path", :verb=>"post"},
-  #    {:name=>"root_path", :verb=>"get"}
-  #]}
+  after(:all) { unchecked_routes.should be_empty, "expected empty array, instead got #{unchecked_routes.inspect}" }
 end

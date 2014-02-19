@@ -1,5 +1,20 @@
 require 'action_dispatch/testing/integration'
 
+module RequestSpecHelpers
+  def all_routes
+    routes = Rails.application.routes.routes
+    require 'rails/application/route_inspector'
+    inspector = Rails::Application::RouteInspector.new
+    routes = inspector.collect_routes(routes)
+    routes.each do |route|
+      route.delete :name
+      route[:verb] = route[:verb].present? ? route[:verb].downcase : 'get'
+      route[:path] = route[:path].gsub(/\(.*\)/, '')
+      route.delete :reqs
+    end
+  end
+end
+
 module ActionDispatch
   module Integration
     module RequestHelpers
