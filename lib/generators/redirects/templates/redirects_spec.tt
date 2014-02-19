@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Redirects', :type => :requests do
   <% @all_routes.each do |route| %>
-    <%= "it '#{route[:verb]} #{route[:path]}' do" %>
+    <%= "it '#{route[:verb]} #{route[:name]}' do" %>
     <%= "  #{route[:verb]}_via_redirect '#{route[:path]}', {}" %>
     <%= "end" %>
   <% end %>
