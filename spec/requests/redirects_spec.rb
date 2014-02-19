@@ -8,7 +8,7 @@ describe 'Redirects', :type => :requests do
   end
 
   it 'post /users/sign_in' do
-    post_via_redirect '/users/sign_in', { 'user[email]' => user.email, 'user[password]' => user.password }
+    post_via_redirect '/users/sign_in', {}
   end
 
   it 'delete /users/sign_out' do
