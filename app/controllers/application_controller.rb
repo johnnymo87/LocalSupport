@@ -5,9 +5,9 @@ class ApplicationController < ActionController::Base
 
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
-    #unless request.params['controller'] =~ /devise/
+    unless request.params['controller'] =~ /devise/
       session[:previous_url] = request.path
-    #end
+    end
   end
 
   #We test this functionality in sign-in tests for session_controller_spec

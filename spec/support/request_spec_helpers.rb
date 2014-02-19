@@ -43,8 +43,10 @@ module ActionDispatch
         require 'rails/application/route_inspector'
         inspector = Rails::Application::RouteInspector.new
         routes = inspector.collect_routes(routes)
+        name = ''
         routes.each do |route|
-          #route.delete :name
+          name = route[:name] if route[:name].present?
+          route[:name] = route[:name].present? ? route[:name] + '_path' : name + '_path'
           route[:verb] = route[:verb].present? ? route[:verb].downcase : 'get'
           route[:path] = route[:path].gsub(/\(.*\)/, '')
           route.delete :reqs
