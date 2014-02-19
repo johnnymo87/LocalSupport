@@ -10,27 +10,28 @@ module ActionDispatch
 
       CALLED_ROUTES = []
 
-      def reqs
+      def request_info
+        controller = request.env['action_controller.instance']
         flash = request.env['rack.session']['flash']
         output = []
-        output << "#{request.env["action_controller.instance"].controller_path}##{request.env["action_controller.instance"].action_name}"
+        output << "#{controller.controller_path}##{controller.action_name}"
         output << flash.instance_values['flashes'] if flash
       end
 
       def request_via_redirect(http_method, path, parameters = nil, headers = nil)
-        methods_hit = []
+        output = []
         process(http_method, path, parameters, headers)
-        methods_hit << reqs
+        output << request_info
         record_route(http_method, path)
         redirect_count = 0
         while redirect? do
           follow_redirect!
-          methods_hit << reqs
+          output << request_info
           redirect_count += 1
           raise 'Redirected more than 5 times, check for infinite redirects.' if redirect_count > 5
         end
         raise "Expected status 200, got status #{status}" unless status == 200
-        print methods_hit.flatten.join(', ')
+        print output.flatten.join(', ')
       end
 
       def record_route(http_method, path)
