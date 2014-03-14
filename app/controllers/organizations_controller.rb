@@ -92,14 +92,10 @@ class OrganizationsController < ApplicationController
 
   private
   def gmap4rails_with_popup_partial(item, partial)
-    @organizations = Organization.all
-    @hash = Gmaps4rails.build_markers(@organizations) do |org, marker|
+    @hash = Gmaps4rails.build_markers(item) do |org, marker|
       marker.lat org.latitude
       marker.lng org.longitude
-    end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @organizations }
+      marker.infowindow render_to_string(:partial => partial, :locals => { :@org => org})
     end
   end
   def user_can_edit?(org)
