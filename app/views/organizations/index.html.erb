@@ -1,3 +1,4 @@
+
 <div id="orgs_scroll">
   <div class="table table-bordered">
     <table>
@@ -15,11 +16,12 @@
   </div>
 </div>
 
-<br/>
-<div style="width:50%;float:left">
-  <%= link_to_if(current_user.try(:admin?), 'New Organization',
-                 new_organization_path){} %>
-</div>
+<% if current_user.try(:admin?) %>
+  <br/>
+  <div style="width:50%;float:left">
+    <%= link_to 'New Organization', new_organization_path %>
+  </div>
+<% end %>
 
 <% content_for :map do %>
     <div class="map_container">

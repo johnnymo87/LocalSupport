@@ -17,7 +17,12 @@ section#main > div.container {
     background: transparent;
 }
 
-#column2, header, #footer {
+header {
+    position: relative;
+    z-index: 2;
+}
+
+#column2, #footer {
     position: relative;
     z-index: 1;
 }
