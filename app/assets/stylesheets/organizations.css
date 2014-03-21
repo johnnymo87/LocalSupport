@@ -18,9 +18,14 @@
 }
 
 #orgs_scroll {
-    height:340px;
-    width:100%;
-    border:1px solid #ccc;
+    height: 340px;
+    border: 1px solid #ccc;
     overflow-x: hidden;
     overflow-y: scroll;
+    width: 95%;
+    margin-bottom: 0 !important;
+}
+
+.borderless {
+    border-top: none !important;
 }
