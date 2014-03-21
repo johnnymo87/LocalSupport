@@ -12,6 +12,15 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
+
 .org_form {
     width:100%;
+}
+
+#orgs_scroll {
+    height:340px;
+    width:100%;
+    border:1px solid #ccc;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

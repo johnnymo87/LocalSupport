@@ -1,4 +1,4 @@
-<div id="orgs_scroll" style="height:340px;width:100%;border:1px solid #ccc;overflow:scroll;">
+<div id="orgs_scroll">
   <div class="table table-bordered">
     <table>
       <div id="organizations">
@@ -14,8 +14,8 @@
     </table>
   </div>
 </div>
-<br/>
 
+<br/>
 <div style="width:50%;float:left">
   <%= link_to_if(current_user.try(:admin?), 'New Organization',
                  new_organization_path){} %>
