@@ -1,0 +1,32 @@
+<!-- Span 6 -->
+<div class="row">
+  <div class="map_container">
+    <div id="map"></div>
+  </div>
+  <script type="text/javascript">
+    handler = Gmaps.build('Google');
+    handler.buildMap({
+          provider: {
+            zoom: 12,
+            center: new google.maps.LatLng(51.580697,-0.34212),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          },
+          internal: {id: 'map'}
+        },
+        function () {
+          var rawData = <%= raw @hash.to_json %>;
+          for (var i = 0; i < rawData.length; i++) {
+            rawData[i].click = function(e) { alert('hello'); }
+            if (i < 10) {
+              console.log(rawData[i]);
+            }
+          }
+          markers = handler.addMarkers(rawData);
+        });
+  </script>
+
+  <div id="column2" class="span6 pull-right">
+    <%= yield %>
+  </div>
+</div>
+<%= parent_layout 'application' %>
