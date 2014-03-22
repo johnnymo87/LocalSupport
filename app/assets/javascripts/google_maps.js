@@ -1,44 +1,36 @@
 LocalSupport.maps = {
     // View must provide a URL variable
     getData: function(URL) {
+    },
+    loadMap: function() {
+        var harrow = new google.maps.LatLng(51.605427,-0.254600);
+        var mapOptions = {
+            zoom: 12,
+            center: harrow
+        };
+        return new google.maps.Map(document.getElementById('map'), mapOptions);
+    },
+    loadMarkers: function(map, url) {
         $.ajax({
             type: 'GET',
-            url: URL,
-            dataType: 'json',
-            contentType: 'application/json',
+            url: url,
+            dataType: 'JSON',
             success: function (data) {
-                checks.each(function () {
-                    var parent = $(this).closest('td'),
-                        row = $(this).closest('tr'),
-                        id = row.attr('id'),
-                        res = data[id];
-                    parent.html(res);
-                    if (res.match(/Error:/g)) {
-                        row.addClass("alert alert-error")
-                    } else {
-                        row.addClass("alert alert-success")
-                    }
-                });
-            },
-            error: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var org = data[i];
+                    var coords = new google.maps.LatLng(org.latitude, org.longitude);
+                    var marker = new google.maps.Marker({
+                        position: coords,
+                        title: org.name
+                    });
+                    marker.setMap(map)
+                }
             }
         });
     }
 };
 
-handler = Gmaps.build('Google');
-handler.buildMap({
-        provider: {
-            zoom: 12,
-            center: new google.maps.LatLng(51.580697,-0.34212),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        },
-        internal: {id: 'map'}
-    },
-    function () {
-        var rawData = LocalSupport.maps.getData(organizationURL);
-        var markers = rawData.each(function() {
-
-        })
-    });
-
+$(function () {
+    var map = LocalSupport.maps.loadMap();
+    LocalSupport.maps.loadMarkers(map, organizationURL)
+});

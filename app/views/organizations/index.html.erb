@@ -1,3 +1,10 @@
+<% content_for :scripts do %>
+    <%= javascript_tag do %>
+        window.organizationURL = "<%=j organizations_path %>";
+    <% end %>
+    <%= javascript_include_tag 'google_maps' %>
+<% end %>
+
 <%= form_tag("/organizations/search", :method => "get") do %>
   <%= label_tag(:q, "Select Category:") %>
   <%= select('category', 'id', @category_options, { :include_blank => 'All' },
