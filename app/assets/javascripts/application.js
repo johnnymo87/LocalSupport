@@ -11,6 +11,8 @@
 //= require gmaps/google
 //= require_tree ./global
 
+var LocalSupport = {};
+
 $(function() {
     // invoke global functions here
 });
