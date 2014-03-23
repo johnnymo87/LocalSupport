@@ -7,8 +7,25 @@
 </div>
 <div class="columns">
   <div id="column1" class="span6" style="z-index: -1;"></div>
-  <div id="column2" class="span6 pull-right">
-    <%= yield %>
+  <div id="column2" class="dashboard span6 pull-right">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Search for</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Organisations</a></li>
+          <li><a href="#">Volunteers</a></li>
+          <li><a href="#">Events</a></li>
+        </ul>
+      </div>
+    </div>
+    <!--<div class="dashboard-outer">-->
+      <!--Search for voluntary and community organisations-->
+    <!--</div>-->
+    <div class="dashboard-inner">
+      <%= yield %>
+    </div>
+
+
   </div>
 </div>
 <%= parent_layout 'application' %>

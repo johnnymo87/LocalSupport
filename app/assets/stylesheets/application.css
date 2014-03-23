@@ -15,7 +15,7 @@ body, html {
 }
 
 body {
-    /*overflow: hidden;*/
+    overflow: hidden;
     padding-top: 0px !important;
     margin-top: 0px !important;
     padding-bottom: 0px !important;
@@ -39,6 +39,7 @@ body {
 
 #push, #footer {
     clear: both;
+    overflow: hidden;
     height: 40px;
 }
 
