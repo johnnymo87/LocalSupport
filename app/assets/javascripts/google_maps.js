@@ -18,16 +18,16 @@ LocalSupport.maps = {
             dataType: 'JSON',
             success: function (data) {
                 if (data.length == undefined) {
-                    LocalSupport.maps.loadMarkers(map, data)
+                    LocalSupport.maps.loadMarker(map, data)
                 } else {
                     for (var i = 0; i < data.length; i++) {
-                        LocalSupport.maps.loadMarkers(map, data[i])
+                        LocalSupport.maps.loadMarker(map, data[i])
                     }
                 }
             }
         });
     },
-    loadMarkers: function(map, org) {
+    loadMarker: function(map, org) {
         var coords = new google.maps.LatLng(org.latitude, org.longitude);
         var marker = new google.maps.Marker({
             position: coords,
@@ -47,6 +47,7 @@ LocalSupport.maps = {
             this.infoWindow.open(map, this);
             LocalSupport.maps.openInfoWindow = this.infoWindow
         });
+        marker.setMap(map)
     }
 };
 
