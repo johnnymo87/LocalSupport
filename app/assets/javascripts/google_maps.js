@@ -16,13 +16,32 @@ LocalSupport.maps = {
             url: url,
             dataType: 'JSON',
             success: function (data) {
+                var openInfoWindow
                 for (var i = 0; i < data.length; i++) {
                     var org = data[i];
                     var coords = new google.maps.LatLng(org.latitude, org.longitude);
                     var marker = new google.maps.Marker({
                         position: coords,
-                        title: org.name
+                        title: org.name,
+                        infoWindow: new google.maps.InfoWindow({
+                            content: '<a href="/organizations/' + org.id + '">' + org.name + '</a><br>' + org.description,
+                            position: coords,
+                            disableAutoPan: true
+                        })
                     });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        // this == marker
+                        if (openInfoWindow != undefined) {
+                            openInfoWindow.close()
+                        }
+                        this.infoWindow.open(map, this);
+                        openInfoWindow = this.infoWindow
+                    });
+//                    google.maps.event.addListener(marker, 'click', function() {
+////                        map.setZoom(8);
+//                        map.setCenter(marker.getPosition());
+//                    });
+
                     marker.setMap(map)
                 }
             }
