@@ -2,6 +2,11 @@
   <%= javascript_include_tag 'this_is_my_org' %>
 <% end %>
 
+<%= javascript_tag do %>
+    window.organizationURL = "<%=j organization_path(@organization) %>";
+<% end %>
+
+
 <div class="row">
   <h3>
     <%= @organization.name %>

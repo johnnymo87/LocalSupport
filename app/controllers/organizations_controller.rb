@@ -17,7 +17,6 @@ class OrganizationsController < ApplicationController
       format.html { render template: 'organizations/index' }
       format.json { render json: @organizations }
     end
-
   end
 
   # GET /organizations
