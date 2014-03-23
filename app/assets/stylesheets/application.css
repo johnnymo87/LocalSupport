@@ -11,9 +11,11 @@
 
 body, html {
     height: 100% !important;
+    padding-top: 40px;
 }
 
 body {
+    /*overflow: hidden;*/
     padding-top: 0px !important;
     margin-top: 0px !important;
     padding-bottom: 0px !important;
@@ -202,4 +204,10 @@ body {
 .form-frame  input:focus, .form-frame  textarea:focus {
     outline: 0;
     background: #FFF;
+}
+
+.columns {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow: auto;
 }

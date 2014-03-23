@@ -1,8 +1,5 @@
-<% content_for :scripts do %>
-    <%= javascript_tag do %>
-        window.organizationURL = "<%=j organizations_path %>";
-    <% end %>
-    <%= javascript_include_tag 'google_maps' %>
+<%= javascript_tag do %>
+    window.organizationURL = "<%=j organizations_path %>";
 <% end %>
 
 <%= form_tag("/organizations/search", :method => "get") do %>

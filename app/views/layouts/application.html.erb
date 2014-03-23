@@ -19,8 +19,9 @@
 <% unless cookie_policy_accepted? %>
     <%= render 'layouts/cookie_alert' %>
 <% end %>
+<%= render 'layouts/header' %>
+
 <div class="page-frame">
-  <%= render 'layouts/header' %>
   <section id="main">   <!-- uniquify the child container to create the top margin -->
       <div class="container">  <!-- outermost twitter bootstrap container-->
         <% flash.each do |name, msg| %>
