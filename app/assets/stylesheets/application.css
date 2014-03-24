@@ -9,19 +9,20 @@
  *= require bootstrap-sortable
 */
 
-body, html {
+/*body, html {*/
     /*height: 100% !important;*/
     /*position: relative;*/
     /*padding-top: 40px;*/
-}
+/*}*/
 
-/*body {*/
+body {
+    position: relative;
     /*overflow: hidden;*/
     /*padding-top: 0px !important;*/
     /*margin-top: 0px !important;*/
     /*padding-bottom: 0px !important;*/
     /*background-color: whitesmoke !important;*/
-/*}*/
+}
 
 body > .navbar .brand {
     margin-left: 20px;

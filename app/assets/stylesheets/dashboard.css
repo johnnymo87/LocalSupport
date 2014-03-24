@@ -15,6 +15,14 @@
     /*overflow: auto;*/
 }
 
+@media (max-width: 979px) {
+  .navbar-fixed-top {
+    position: relative;     /* replaces position: static, which doesn't work with z-indexes */
+  }
+  .navbar-fixed-top {
+    margin-bottom: 40px;
+  }
+}
 .dashboard > .navbar {
     margin-bottom: 0 !important;
 }
