@@ -4,9 +4,9 @@ LocalSupport.maps = {
     getData: function(URL) {
     },
     loadMap: function() {
-        var harrow = new google.maps.LatLng(51.605427,-0.254600);
+        var harrow = new google.maps.LatLng(51.590000,-0.280000);
         var mapOptions = {
-            zoom: 12,
+            zoom: 13,
             center: harrow
         };
         return new google.maps.Map(document.getElementById('map'), mapOptions);
