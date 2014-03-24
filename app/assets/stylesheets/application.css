@@ -15,19 +15,43 @@
     /*padding-top: 40px;*/
 /*}*/
 
-body {
+/*body {*/
     /*position: relative;*/
     /*overflow: hidden;*/
     /*padding-top: 0px !important;*/
     /*margin-top: 0px !important;*/
     /*padding-bottom: 0px !important;*/
     /*background-color: whitesmoke !important;*/
+/*}*/
+
+body {
+    overflow-x: hidden;     /* This is a bad idea! */
 }
 
 body > .navbar .brand {
     margin-left: 20px;
     float: right;
     padding-bottom: 0;
+}
+
+.footer .navbar .nav {
+    float: none;
+    width: 100%;
+}
+
+.footer > .navbar-fixed-bottom .navbar-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 4px 4px 0 0 !important;            /* Hack to clear a style from above */
+}
+
+.footer .navbar .nav > li {
+    text-align: center;
+}
+
+.centered {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* GLOBAL STYLES
