@@ -1,18 +1,18 @@
-.columns {
-    position: absolute;
-    top: 80px;
-    bottom: 40px;
-}
+
 
 .dashboard {
-    /*position: relative;*/
+    /*position: absolute;*/
+    /*top: 80px;*/
+    /*bottom: 40px;*/
+    /*right: 60px;*/
+    position: relative;
     /*top: 20px;*/
     /*bottom: 20px;*/
     /*height: 100%;*/
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px 4px 0 0;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 .dashboard > .navbar {
