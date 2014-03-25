@@ -2,16 +2,7 @@
     window.organizationURL = "<%=j organizations_path %>";
 <% end %>
 
-<%= form_tag("/organizations/search", :method => "get") do %>
-  <%= label_tag(:q, "Select Category:") %>
-  <%= select('category', 'id', @category_options, { :include_blank => 'All' },
-             { :style => 'margin-bottom: 5px;' }) %>
-  <%= submit_tag "Submit", { :class => 'btn btn-info',
-                             :style => 'margin-bottom: 5px;' } %>
-  <%= text_field_tag(:q, @query_term || '',
-                     { :style => 'margin-bottom: 5px; width: 240px;',
-                       :placeholder => 'optional search name/description' }) %>
-<% end %>
+<%= render partial: 'layouts/search_form' %>
 
 <div id="orgs_scroll">
   <div class="table table-bordered">
