@@ -7,18 +7,19 @@ class String
 end
 
 class Organization < ActiveRecord::Base
+  attr_accessible :name, :description, :address, :postcode, :email, :website, :telephone, :donation_info, :publish_address, :publish_phone, :publish_email
+  accepts_nested_attributes_for :users
+
+  has_many :users
+  has_and_belongs_to_many :categories
+  
+  geocoded_by :address
+  after_validation :geocode
+
   #validates_presence_of :website, :with => /http:\/\//
   validates_url :website, :prefferred_scheme => 'http://', :if => Proc.new{|org| org.website.present?}
   validates_url :donation_info, :prefferred_scheme => 'http://', :if => Proc.new{|org| org.donation_info.present?}
 
-  # http://stackoverflow.com/questions/10738537/lazy-geocoding
-  #acts_as_gmappable :check_process => false, :process_geocoding => :run_geocode?
-  has_many :users
-  has_and_belongs_to_many :categories
-  # Setup accessible (or protected) attributes for your model
-  # prevents mass assignment on other fields not in this list
-  attr_accessible :name, :description, :address, :postcode, :email, :website, :telephone, :donation_info, :publish_address, :publish_phone, :publish_email
-  accepts_nested_attributes_for :users
   scope :order_by_most_recent, order('updated_at DESC')
   scope :not_null_email, :conditions => "organizations.email <> ''"
   # Should we not use :includes, which pulls in extra data? http://nlingutla.com/blog/2013/04/21/includes-vs-joins-in-rails/

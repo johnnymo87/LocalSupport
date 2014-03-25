@@ -82,7 +82,6 @@ group :test do
 end
 
 gem 'therubyracer'
-gem 'gmaps4rails', '~>2.1.2'
 #gem 'mongrel'
 gem 'kaminari'
 gem 'unicorn'
@@ -92,5 +91,9 @@ gem 'redcarpet'
 
 # validating organization website URLs
 gem 'url_validator'
+
+# for maps
+gem 'geocoder'
+gem 'gmaps4rails', '~>2.1.2'
 
 
