@@ -6,9 +6,10 @@
         return this.each(function() {
 
             var $this = $(this);
-            var display = $this.find('.dropdown-display'); // display span
-            var field = $this.find('input.dropdown-field'); // hidden input
-            var options = $this.find('ul.dropdown-menu > li > a');// select options
+            var display = $this.find('.dropdown-display');          // display span
+            var field = $this.find('input.dropdown-field');         // hidden input
+            var options = $this.find('ul.dropdown-menu > li > a');  // select options
+            var submit = $('#customsearch .btn[type=submit]');      // search button
 
             // when the hidden field is updated, update dropdown-toggle
             var onFieldChange = function(event) {
@@ -20,14 +21,14 @@
             // when an option is clicked, update the hidden field
             var onOptionClick = function(event) {
                 // stop click from causing page refresh
-                event.preventDefault();
+//                event.preventDefault();
                 field.val($(this).attr('data-value'));
                 field.change();
+                submit.click();
             };
 
             field.change(onFieldChange);
             options.click(onOptionClick);
-
         });
     };
 })(jQuery);
