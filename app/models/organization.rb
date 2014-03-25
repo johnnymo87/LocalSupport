@@ -8,11 +8,11 @@ end
 
 class Organization < ActiveRecord::Base
   attr_accessible :name, :description, :address, :postcode, :email, :website, :telephone, :donation_info, :publish_address, :publish_phone, :publish_email
-  accepts_nested_attributes_for :users
 
   has_many :users
+  accepts_nested_attributes_for :users
   has_and_belongs_to_many :categories
-  
+
   geocoded_by :address
   after_validation :geocode
 
