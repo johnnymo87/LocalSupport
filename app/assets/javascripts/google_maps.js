@@ -1,8 +1,6 @@
 LocalSupport.maps = {
-    // View must provide a URL variable
-    openInfoWindow: undefined,
-    getData: function(URL) {
-    },
+    data: undefined,        // View must provide this array of json hashes (e.g. raw @organizations.to_json)
+    openInfoWindow: undefined,      // Used to track currently open info window
     loadMap: function() {
         var harrow = new google.maps.LatLng(51.590000,-0.280000);
         var mapOptions = {
@@ -10,22 +8,6 @@ LocalSupport.maps = {
             center: harrow
         };
         return new google.maps.Map(document.getElementById('map'), mapOptions);
-    },
-    getData: function(map, url) {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'JSON',
-            success: function (data) {
-                if (data.length == undefined) {
-                    LocalSupport.maps.loadMarker(map, data)
-                } else {
-                    for (var i = 0; i < data.length; i++) {
-                        LocalSupport.maps.loadMarker(map, data[i])
-                    }
-                }
-            }
-        });
     },
     loadMarker: function(map, org) {
         var coords = new google.maps.LatLng(org.latitude, org.longitude);
@@ -52,6 +34,9 @@ LocalSupport.maps = {
 };
 
 $(function () {
-    var map = LocalSupport.maps.loadMap();
-    LocalSupport.maps.getData(map, organizationURL)
+    var that = LocalSupport.maps;
+    var map = that.loadMap();
+    that.data.forEach(function(org) {
+        that.loadMarker(map, org)
+    });
 });

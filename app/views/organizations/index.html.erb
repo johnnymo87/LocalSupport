@@ -1,5 +1,5 @@
 <%= javascript_tag do %>
-    window.organizationURL = "<%=j organizations_path %>";
+    LocalSupport.maps.data = <%=raw @organizations.to_json %>
 <% end %>
 
 <%= render partial: 'layouts/search_form' %>

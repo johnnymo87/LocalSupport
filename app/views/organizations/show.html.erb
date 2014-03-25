@@ -3,7 +3,7 @@
 <% end %>
 
 <%= javascript_tag do %>
-    window.organizationURL = "<%=j organization_path(@organization) %>";
+    LocalSupport.maps.data = <%=raw [@organization].to_json %>
 <% end %>
 
 
