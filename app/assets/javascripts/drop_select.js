@@ -21,7 +21,6 @@
             var onOptionClick = function(event) {
                 // stop click from causing page refresh
                 event.preventDefault();
-                debugger
                 field.val($(this).attr('data-value'));
                 field.change();
             };

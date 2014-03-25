@@ -1,4 +1,6 @@
-<% javascript_include_tag 'drop_select' %>
+<% content_for :scripts do %>
+    <% javascript_include_tag 'drop_select' %>
+<% end %>
 
 <%= form_tag("/organizations/search", :method => "get") do %>
     <div class='controls' id='customsearch' style="margin-top: 15px;">
@@ -12,7 +14,7 @@
             <% end %>
           </span><i class='caret'></i>
         </a>
-        <%= text_field_tag(:q , @query_term || '', {:style => 'width: 240px;', :placeholder => "optional search name/description" }) %>
+        <!--<%= text_field_tag(:q , @query_term || '', {:style => 'width: 240px;', :placeholder => "optional search name/description" }) %>-->
         <input type='hidden' class='dropdown-field' id="category_id" name="category[id]" />
         <ul id='cat_select' class='dropdown-menu'>
           <li>
@@ -24,7 +26,11 @@
               </li>
           <% end %>
         </ul>
-        <%= submit_tag 'Search', { id: 'search_btn', class: 'btn' } %>
+        <!--<%= submit_tag 'Search', { id: 'search_btn', class: 'btn' } %>-->
+        <form class="navbar-form pull-right">
+          <input type="text" class="span2" placeholder="optional search name/description" style="width: 215px;">
+          <button type="submit" class="btn">Search</button>
+        </form>
       </div>
     </div>
 <% end %>
