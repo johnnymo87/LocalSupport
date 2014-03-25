@@ -14,7 +14,7 @@
             <% end %>
           </span><i class='caret'></i>
         </a>
-        <!--<%= text_field_tag(:q , @query_term || '', {:style => 'width: 240px;', :placeholder => "optional search name/description" }) %>-->
+        <%= text_field_tag(:q , @query_term || '', {:style => 'width: 240px;', :placeholder => "optional search name/description" }) %>
         <input type='hidden' class='dropdown-field' id="category_id" name="category[id]" />
         <ul id='cat_select' class='dropdown-menu'>
           <li>
@@ -26,8 +26,6 @@
               </li>
           <% end %>
         </ul>
-        <!--<%= submit_tag 'Search', { id: 'search_btn', class: 'btn' } %>-->
-          <input type="text" class="span2" placeholder="optional search name/description" style="width: 215px;">
           <button type="submit" class="btn">Search</button>
       </div>
     </div>
