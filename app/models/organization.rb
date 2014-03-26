@@ -14,7 +14,7 @@ class Organization < ActiveRecord::Base
   has_and_belongs_to_many :categories
 
   geocoded_by :address
-  after_create :geocode
+  after_validation :geocode
 
   #validates_presence_of :website, :with => /http:\/\//
   validates_url :website, :prefferred_scheme => 'http://', :if => Proc.new{|org| org.website.present?}
