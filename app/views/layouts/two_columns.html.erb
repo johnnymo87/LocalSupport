@@ -5,9 +5,10 @@
 <div class="map_container">
   <div id="map"></div>
 </div>
-<div class="columns">
+<div class="row-fluid">
   <div id="column1" class="span6" style="z-index: -1;"></div>
-  <div id="column2" class="dashboard span6 pull-right">
+  <div id="column2" class="dashboard span6">
+    <!--<div class="row-fluid">-->
     <div class="navbar">
       <div class="navbar-inner">
         <a class="brand" href="/">Search for</a>
@@ -18,12 +19,10 @@
         </ul>
       </div>
     </div>
-    <!--<div class="dashboard-outer">-->
-      <!--Search for voluntary and community organisations-->
-    <!--</div>-->
     <div class="dashboard-inner">
       <%= yield %>
     </div>
+    <!--</div>-->
   </div>
 </div>
 <%= parent_layout 'application' %>
