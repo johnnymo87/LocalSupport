@@ -1,22 +1,22 @@
 <%= javascript_tag do %>
-    LocalSupport.maps.data = <%=raw @organizations.to_json %>
+    LocalSupport.maps.data = <%= raw @organizations.to_json %>
 <% end %>
 
 <%= render partial: 'layouts/search_form' %>
 
 <div id="orgs_scroll">
-  <div class="table table-bordered">
-    <table>
-      <div id="organizations">
-        <% @organizations.each do |organization| %>
+  <div id="organizations">
+    <table class="table">
+      <tbody>
+      <% @organizations.each do |organization| %>
           <tr>
             <td>
-              <u><%= link_to organization.name, organization %></u><br/>
+              <%= link_to organization.name, organization %>
               <%= smart_truncate(organization.description) %>
             </td>
           </tr>
-        <% end %>
-      </div>
+      <% end %>
+      </tbody>
     </table>
   </div>
 </div>
