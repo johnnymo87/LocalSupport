@@ -1,11 +1,10 @@
 class PagesController < ApplicationController
-  layout 'full_width'
+  layout 'full_width', :except => :show
   # in a method use render layout: "layout"
   before_filter :authorize, :except => :show
 
   # GET /pages
   # GET /pages.json
-  #TODO Hide all but show and edit
   def index
     @pages = Page.all
   end
@@ -17,12 +16,12 @@ class PagesController < ApplicationController
     begin
       # find_by_permalink! returns exception if no match
       @page = Page.find_by_permalink!(params[:id])
-      status_code = 200
     rescue ActiveRecord::RecordNotFound
       @page = Page.find_by_permalink!('404')
-      status_code = 404
     end
-    render :html => @page, :status => status_code
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /pages/new

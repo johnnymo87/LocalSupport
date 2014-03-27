@@ -1,0 +1,3 @@
+$('#myModal').html('<%= escape_javascript(render 'layouts/modal') %>');
+$('#modal-body').html('<%= escape_javascript(markdown(@page.content)) %>');
+$('#modal-footer').html('<%= escape_javascript(render 'pages/show_footer') %>');

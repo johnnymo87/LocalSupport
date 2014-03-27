@@ -7,9 +7,7 @@ class ApplicationController < ActionController::Base
   def white_listed
     %w(
         application
-        contributors
         organizations
-        pages
     )
   end
 

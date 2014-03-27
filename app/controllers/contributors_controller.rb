@@ -1,5 +1,4 @@
 class ContributorsController < ApplicationController
-  layout 'full_width'
   require 'rubygems'
   require 'json'
 
@@ -12,6 +11,9 @@ class ContributorsController < ApplicationController
     response = http.request(request)
     json_data = response.body
     @contributors = JSON.parse(json_data)
+    respond_to do |format|
+      format.js
+    end
   end
 
 end

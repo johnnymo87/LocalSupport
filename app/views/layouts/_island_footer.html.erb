@@ -2,10 +2,10 @@
 <div class="navbar navbar-fixed-bottom centered" style="width: 420px">
   <div class="navbar-inner">
     <ul class="nav">
-      <li><%= link_to 'Contributors', page_path('contributors') %></li>
-      <li><%= link_to 'Contact', page_path('contact') %></li>
-      <li><%= link_to 'Disclaimer', page_path('disclaimer') %></li>
-      <li><%= link_to 'About Us', page_path('about') %></li>
+      <li><%= link_to 'Contributors', page_path('contributors'), remote: true, data: { toggle: 'modal', target: '#myModal' } %></li>
+      <li><%= link_to 'Contact', page_path('contact'), remote: true, data: { toggle: 'modal', target: '#myModal' } %></li>
+      <li><%= link_to 'Disclaimer', page_path('disclaimer'), remote: true, data: { toggle: 'modal', target: '#myModal' } %></li>
+      <li><%= link_to 'About Us', page_path('about'), remote: true, data: { toggle: 'modal', target: '#myModal' } %></li>
     </ul>
   </div>
 </div>

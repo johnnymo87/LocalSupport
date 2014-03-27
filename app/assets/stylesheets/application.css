@@ -182,7 +182,7 @@ body > .navbar .brand {
 }
 
 #git-container .git-item {
-    width: 25%;
+    width: 50%;
     height: 120px;
     margin-bottom: -40px!important;
 }
