@@ -9,6 +9,9 @@
 //= require twitter/bootstrap
 //= require underscore
 //= require gmaps/google
+//= require angular
+//= require angular-resource
+//= require LocalSupport.js.coffee
 //= require_tree ./global
 
 var LocalSupport = {};

@@ -5,17 +5,14 @@
 <%= render partial: 'layouts/search_form' %>
 
 <div id="orgs_scroll">
-  <div id="organizations">
+  <div ng-controller="OrganizationsCtrl">
     <table class="table">
       <tbody>
-      <% @organizations.each do |organization| %>
-          <tr>
+          <tr ng-repeat="organization in organizations">
             <td>
-              <%= link_to organization.name, organization %>
-              <%= smart_truncate(organization.description) %>
+              {{organization.name}} <small>{{organization.description}}</small>
             </td>
           </tr>
-      <% end %>
       </tbody>
     </table>
   </div>
