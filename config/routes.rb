@@ -1,5 +1,19 @@
 LocalSupport::Application.routes.draw do
 
+  get "jobs/new"
+
+  get "jobs/create"
+
+  get "jobs/edit"
+
+  get "jobs/update"
+
+  get "jobs/show"
+
+  get "jobs/index"
+
+  get "jobs/destroy"
+
   devise_for :users
 
   get 'contributors' => 'contributors#show'
