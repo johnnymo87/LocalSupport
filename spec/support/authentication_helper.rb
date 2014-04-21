@@ -19,4 +19,42 @@ module RequestHelpers
   def login(user)
     post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
   end
+
+  # include ActionController::UrlFor
+  # include Rails.application.routes.url_helpers
+
+  def check_routes(controller_name)
+    include ActionController::UrlFor
+
+    Rails.application.routes.routes.each do |route|
+      if route.defaults[:controller] == controller_name.downcase
+
+        url_for
+        route.defaults[:only_path] = true
+        path = url_for(route.defaults)
+
+        verb = find_verb_from(route.verb)
+        # path = find_path_from(route.defaults)
+
+        puts 'hi'
+        debugger
+        puts 'lo'
+
+
+        puts eval("#{verb} '#{path}'")
+      end
+    end
+  end
+
+  private
+
+  def find_verb_from(regex)
+    actions = %w(GET POST PUT DELETE)
+    actions.select{|a| a.match(regex) }.first.downcase
+  end
+
+  def find_path_from(action_param)
+    action_param[:only_path] = true
+    url_for action_param
+  end
 end
