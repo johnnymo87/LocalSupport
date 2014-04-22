@@ -19,10 +19,9 @@ module RequestHelpers
   def login(user)
     post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
   end
+end
 
-  # include ActionController::UrlFor
-  # include Rails.application.routes.url_helpers
-
+module TapRoutes
   def check_routes(controller_name)
     include ActionController::UrlFor
 
@@ -57,4 +56,5 @@ module RequestHelpers
     action_param[:only_path] = true
     url_for action_param
   end
+
 end

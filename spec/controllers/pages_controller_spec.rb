@@ -1,8 +1,26 @@
 require 'spec_helper'
 
 describe PagesController do
-  let(:page) { mock_model Page, id: '2' }
+  let(:page) { mock_model Page }
+  let(:attributes) { {name: 'Yoohoo!', permalink: 'yoohoo', content: 'yada yada'} }
+
   before { controller.stub(:admin?) { true } }
+
+  shared_examples_for 'a restricted action' do |verb, action|
+    it 'is restricted' do
+      controller.should_receive(:admin?) { false }
+      case action
+      when :create then params = attributes
+      when :index, :new then params = {}
+      else params = {id: page.id}
+      end
+      # params = page.nil? ? {} : {id: page.id}
+      self.send(verb, action, params)
+      response.status.should eq 302
+      flash[:error].should_not be_empty
+    end
+  end
+
 
   describe 'GET index' do
     it 'assigns all pages as @pages' do
@@ -11,11 +29,7 @@ describe PagesController do
       assigns(:pages).should eq [page]
     end
 
-    it 'is restricted' do
-      controller.should_receive(:admin?) { false }
-      get :index, {}
-      response.status.should eq 302
-    end
+    it_should_behave_like 'a restricted action', :get, :index
 
     it 'uses a full-width layout' do
       get :index, {}
@@ -66,6 +80,7 @@ describe PagesController do
       controller.should_not_receive(:admin?)
       get :show, {id: 'about'}
       response.status.should eq 200
+      flash[:error].should be_nil
     end
 
     it 'uses a full-width layout' do
@@ -84,6 +99,8 @@ describe PagesController do
       assigns(:page).should eq page
     end
 
+    it_should_behave_like 'a restricted action', :get, :new
+
     it 'is restricted' do
       controller.should_receive(:admin?) { false }
       get :new, {}
@@ -100,16 +117,12 @@ describe PagesController do
     before { Page.stub(:find_by_permalink!) }
 
     it 'assigns the requested page as @page' do
-      Page.should_receive(:find_by_permalink!).with(page.id) { page }
+      Page.should_receive(:find_by_permalink!).with(page.id.to_s) { page }
       get :edit, {id: page.id}
       assigns(:page).should eq page
     end
 
-    it 'is restricted' do
-      controller.should_receive(:admin?) { false }
-      get :edit, {id: page.id}
-      response.status.should eq 302
-    end
+    it_should_behave_like 'a restricted action', :get, :edit
 
     it 'uses a full-width layout' do
       get :edit, {id: page.id}
@@ -118,8 +131,6 @@ describe PagesController do
   end
 
   describe 'POST create' do
-    let(:attributes) { {name: 'Yoohoo!', permalink: 'yoohoo', content: 'yada yada'} }
-
     before do
       Page.stub(:new) { page }
       page.stub(:save)
@@ -144,11 +155,7 @@ describe PagesController do
       response.should render_template 'new'
     end
 
-    it 'is restricted' do
-      controller.should_receive(:admin?) { false }
-      post :create, {page: attributes}
-      response.status.should eq 302
-    end
+    it_should_behave_like 'a restricted action', :post, :create
 
     it 'uses a full-width layout' do
       post :create, {page: attributes}
@@ -165,7 +172,7 @@ describe PagesController do
     end
 
     it 'assigns the updated page to @page' do
-      Page.should_receive(:find_by_permalink!).with(page.id) { page }
+      Page.should_receive(:find_by_permalink!).with(page.id.to_s) { page }
       put :update, {id: page.id, page: attributes}
       assigns(:page).should eq page
     end
@@ -183,11 +190,7 @@ describe PagesController do
       response.should render_template 'edit'
     end
 
-    it 'is restricted' do
-      controller.should_receive(:admin?) { false }
-      put :update, {id: page.id, page: attributes}
-      response.status.should eq 302
-    end
+    it_should_behave_like 'a restricted action', :put, :update
 
     it 'uses a full-width layout' do
       put :update, {id: page.id, page: attributes}
@@ -202,7 +205,7 @@ describe PagesController do
     end
 
     it 'assigns the page to be destroyed to @page' do
-      Page.should_receive(:find_by_permalink!).with(page.id) { page }
+      Page.should_receive(:find_by_permalink!).with(page.id.to_s) { page }
       delete :destroy, {id: page.id}
       assigns(:page).should eq page
     end
@@ -217,10 +220,6 @@ describe PagesController do
       response.should redirect_to pages_path
     end
 
-    it 'is restricted' do
-      controller.should_receive(:admin?) { false }
-      delete :destroy, {id: page.id}
-      response.status.should eq 302
-    end
+    it_should_behave_like 'a restricted action', :delete, :destroy
   end
 end
