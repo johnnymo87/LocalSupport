@@ -9,7 +9,7 @@ describe 'Pages', :helpers => :requests do
 
   it 'except for #show, is restricted non-admin' do
     user.admin = false ; user.save!
-    check_routes('pages')
+    check_routes(:page)
 
     # get pages_path, {}
     # flash[:error].should_not be_empty

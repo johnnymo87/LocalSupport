@@ -21,25 +21,53 @@ module RequestHelpers
     post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
   end
 
-  def check_routes(controller_name)
+  def check_routes(factory)
     include ActionController::UrlFor
 
+    object = FactoryGirl.create(factory)
+    param_key = object.class.to_s.downcase.to_sym
+    controller_name = object.class.to_s.pluralize.underscore
+    attr = attributes_for(factory)
+
     Rails.application.routes.routes.each do |route|
-      if route.defaults[:controller] == controller_name.downcase
+      if route.defaults[:controller] == controller_name
 
         url_for
+
+        # case route.defaults[:action]
+        #   when 'show' || 'edit' || 'destroy' then route.defaults[:id] = object.id
+        #   else next
+        # end
+        if route.defaults[:action] == 'show' || route.defaults[:action] == 'edit' || route.defaults[:action] == 'destroy' || route.defaults[:action] == 'update'
+          route.defaults[:id] = object.id
+        end
+
+        if route.defaults == 'create' || route.defaults == 'create'
+          params = {param_key => attr}
+        end
+
+        params ||= {}
+
         route.defaults[:only_path] = true
         path = url_for(route.defaults)
 
         verb = find_verb_from(route.verb)
         # path = find_path_from(route.defaults)
 
-        puts 'hi'
-        debugger
-        puts 'lo'
+        # puts 'hi'
+        # debugger
+        # puts 'lo'
+        command = "#{verb} '#{path}', #{params}"
+        puts command
 
+        puts eval("#{verb} '#{path}', #{params}")
 
-        puts eval("#{verb} '#{path}'")
+        # case route.defaults[:action]
+        #   when 'index' || 'new' || 'show' || 'edit' || 'destroy' then eval("#{verb} '#{path}'")
+        #   when 'create' || 'update' then eval("#{verb} '#{path}', #{{param_key => attr}}")
+        #   # when 'show' || 'edit' || 'destroy' then eval("#{verb} '#{path}', #{{:id => object.id}}")
+        #   else next
+        # end
       end
     end
   end
