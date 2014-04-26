@@ -46,5 +46,5 @@ RSpec.configure do |config|
   config.include ControllerHelpers, :helpers => :controllers
   config.include RequestHelpers, :helpers => :requests
   config.include ViewHelpers, :helpers => :views
-  config.include TapRoutes, :helpers => :route_tapper
+  # config.include TapRoutes, :helpers => :route_tapper
 end

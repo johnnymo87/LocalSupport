@@ -6,6 +6,7 @@ module ControllerHelpers
     controller.stub(:current_user).and_return(admin_user)
     return admin_user
   end
+
   def make_current_user_nonadmin
     nonadmin_user = double("User")
     nonadmin_user.stub(:admin?).and_return(false)
@@ -19,9 +20,7 @@ module RequestHelpers
   def login(user)
     post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
   end
-end
 
-module TapRoutes
   def check_routes(controller_name)
     include ActionController::UrlFor
 
@@ -49,7 +48,7 @@ module TapRoutes
 
   def find_verb_from(regex)
     actions = %w(GET POST PUT DELETE)
-    actions.select{|a| a.match(regex) }.first.downcase
+    actions.select { |a| a.match(regex) }.first.downcase
   end
 
   def find_path_from(action_param)
