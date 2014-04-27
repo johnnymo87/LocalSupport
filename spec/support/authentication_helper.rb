@@ -24,9 +24,10 @@ module RequestHelpers
   def for_actions_in(controller, options)
     tapper ||= RouteTapper.new(self, controller, options)
     tapper.anonymize_controller
-    tapper.actions.each_pair do |action, verb|
-      eval("#{verb} :#{action}")
-      yield
+    tapper.actions.each_pair do |action, command|
+      yield(action, command)
+      # eval("#{verb} :#{action}")
+      # yield
     end
   end
 
@@ -45,8 +46,14 @@ module RequestHelpers
       @options = options
 
       @actions = routes.each_with_object({}) do |route, hsh|
+        # puts 'hi'
+        # debugger
+        # puts 'lo'
+
         action = route.defaults[:action].to_sym
-        hsh[action] = find_verb_from(route.verb) if options_require action
+        verb = find_verb_from(route.verb)
+        params = route.parts.reject { |part| part == :format }
+        hsh[action] = make_executable(verb, action, params) if options_require action
       end
     end
 
@@ -65,6 +72,10 @@ module RequestHelpers
     end
 
     private
+
+    def make_executable(verb, action, params)
+      "#{verb} :#{action}, #{Hash[params.map.with_index.to_a]}"
+    end
 
     def options_require(action)
       if @options[:only]

@@ -1,12 +1,19 @@
 require 'spec_helper'
 
 describe OrganizationsController, :helpers => :requests do
+  extend RequestHelpers
 
 
-    it 'authorization' do
-      for_actions_in(OrganizationsController, :except => [:show]) do
-        response.should redirect_to root_path
-        flash[:error].should_not be nil
+    describe 'authorization' do
+      for_actions_in(OrganizationsController, :except => [:show]) do |action, command|
+        it "#{action} should be restricted" do
+          puts 'hi'
+          debugger
+          puts 'lo'
+          eval(command)
+          response.should redirect_to root_path
+          flash[:error].should_not be nil
+        end
       end
       # anonymize OrganizationsController
       # post :create
