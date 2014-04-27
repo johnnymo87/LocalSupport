@@ -21,6 +21,68 @@ module RequestHelpers
     post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
   end
 
+  def for_actions_in(controller, options)
+    tapper ||= RouteTapper.new(self, controller, options)
+    tapper.anonymize_controller
+    tapper.actions.each_pair do |action, verb|
+      eval("#{verb} :#{action}")
+      yield
+    end
+  end
+
+  class RouteTapper
+    attr_reader :actions
+
+    def initialize(context, controller, options = {})
+      controller_name = controller.to_s.chomp('Controller').downcase
+
+      routes = Rails.application.routes.routes.select do |route|
+        route.defaults[:controller] == controller_name
+      end
+
+      @context = context
+
+      @options = options
+
+      @actions = routes.each_with_object({}) do |route, hsh|
+        action = route.defaults[:action].to_sym
+        hsh[action] = find_verb_from(route.verb) if options_require action
+      end
+    end
+
+    def anonymize_controller
+      commands = @actions.keys.map do |action|
+        %Q{
+        def #{action}
+          render :nothing => true
+        end
+      }
+      end.join('')
+
+      @context.controller do
+        eval(commands)
+      end
+    end
+
+    private
+
+    def options_require(action)
+      if @options[:only]
+        @options[:only].include? action
+      elsif @options[:except]
+        @options[:except].exclude? action
+      else
+        true
+      end
+    end
+
+    def find_verb_from(regex)
+      actions = %w(GET POST PUT DELETE)
+      actions.select { |a| a.match(regex) }.first.downcase
+    end
+  end
+
+
   def check_routes(factory)
     include ActionController::UrlFor
 
@@ -38,8 +100,10 @@ module RequestHelpers
         #   when 'show' || 'edit' || 'destroy' then route.defaults[:id] = object.id
         #   else next
         # end
+
+
         if route.defaults[:action] == 'show' || route.defaults[:action] == 'edit' || route.defaults[:action] == 'destroy' || route.defaults[:action] == 'update'
-          route.defaults[:id] = object.id
+          route.defaults[:id] = object.to_param
         end
 
         if route.defaults == 'create' || route.defaults == 'create'
@@ -54,6 +118,11 @@ module RequestHelpers
         verb = find_verb_from(route.verb)
         # path = find_path_from(route.defaults)
 
+        # if route.defaults[:action] == 'show'
+        #   debugger
+        # end
+
+
         # puts 'hi'
         # debugger
         # puts 'lo'
@@ -61,6 +130,7 @@ module RequestHelpers
         puts command
 
         puts eval("#{verb} '#{path}', #{params}")
+        yield
 
         # case route.defaults[:action]
         #   when 'index' || 'new' || 'show' || 'edit' || 'destroy' then eval("#{verb} '#{path}'")
@@ -74,14 +144,14 @@ module RequestHelpers
 
   private
 
-  def find_verb_from(regex)
-    actions = %w(GET POST PUT DELETE)
-    actions.select { |a| a.match(regex) }.first.downcase
-  end
-
-  def find_path_from(action_param)
-    action_param[:only_path] = true
-    url_for action_param
-  end
+  # def find_verb_from(regex)
+  #   actions = %w(GET POST PUT DELETE)
+  #   actions.select { |a| a.match(regex) }.first.downcase
+  # end
+  #
+  # def find_path_from(action_param)
+  #   action_param[:only_path] = true
+  #   url_for action_param
+  # end
 
 end

@@ -1,5 +1,19 @@
 require 'spec_helper'
 
+describe OrganizationsController, :helpers => :requests do
+
+
+    it 'authorization' do
+      for_actions_in(OrganizationsController, :except => [:show]) do
+        response.should redirect_to root_path
+        flash[:error].should_not be nil
+      end
+      # anonymize OrganizationsController
+      # post :create
+      # response.should redirect_to root_path
+    end
+end
+
 describe OrganizationsController do
   let(:category_html_options){[['cat1',1],['cat2',2]]}
 

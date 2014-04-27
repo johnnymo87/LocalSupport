@@ -6,4 +6,12 @@ describe "Organizations" do
       get organizations_path
     end
   end
+
+  describe 'authorization' do
+    it '' do
+      puts 'hi'
+      debugger
+      puts 'lo'
+    end
+  end
 end
