@@ -1,4 +1,12 @@
 module ApplicationHelper
+
+  def present(object, klass = nil)
+    klass ||= "#{object.class}Presenter".constantize
+    presenter = klass.new(object, self)
+    yield presenter if block_given?
+    presenter
+  end
+
   # from http://stackoverflow.com/questions/1293573/rails-smart-text-truncation
   def smart_truncate(sentence, char_limit = 128)
       sentence = sentence.to_s
