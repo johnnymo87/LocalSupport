@@ -94,4 +94,5 @@ gem 'redcarpet'
 # validating organization website URLs
 gem 'url_validator'
 
-
+# To implement NullUser
+gem 'naught'

@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
 
   include CustomErrors
 
+  def current_user
+    @current_user ||= warden.authenticate(:scope => :user) || NullUser.new
+  end
+
   # To prevent infinite redirect loops, only requests from white listed
   # controllers are available in the "after sign-in redirect" feature
   def white_listed
