@@ -1,27 +1,30 @@
 module ExhibitHelper
-  def self.exhibit(user, organization, context)
+  def self.exhibit(user, organization, template)
     if user.nil?
-      PublicUserViewingOrganization.new(user, organization, context)
+      PublicUserViewingOrganization.new(user, organization, template)
     else
-      RegisteredUserViewingOrganization.new(user, organization, context)
+      RegisteredUserViewingOrganization.new(user, organization, template)
     end
   end
 end
 
+UserPresenter = UserViewingOrganization
 class UserViewingOrganization
-  
-end
-
-class RegisteredUserViewingOrganization < UserViewingOrganization
   def initialize(user, organization, template)
-    @user = user || NullUser.new
-    @organization, @template = organization, template
+    @user, @organization, @template = user, organization, template
+    ExhibitHelper.exhibit(user, organization, template)
   end
 
   def h
     @template
   end
 
+  def edit_button; end
+  def create_volunteer_op_button; end
+  def claim_organization_button; end
+end
+
+class RegisteredUserViewingOrganization < UserViewingOrganization
   def edit_button
     h.link_to_if(
         @user.can_edit?(@organization),
@@ -48,20 +51,13 @@ class RegisteredUserViewingOrganization < UserViewingOrganization
         {method: :put, class: 'btn btn-primary'}
     )
   end
-
 end
 
 class PublicUserViewingOrganization < UserPresenter
-  def edit_button;
-  end
-
-  def create_volunteer_op_button;
-  end
-
   def claim_organization_button
     h.link_to(
         'This is my Organisation',
-        new_user_session_path,
+        h.new_user_session_path,
         {
             :method => put,
             :data-signed_in => false,
@@ -71,14 +67,3 @@ class PublicUserViewingOrganization < UserPresenter
     )
   end
 end
-#  <% if @editable %>
-#      <%= link_to("Edit", edit_organization_path(@organization.id), {:class => 'btn btn-primary'}) %>
-#  <% end %>
-#  <% if @can_create_volunteer_op %>
-#      <%= link_to("Create a Volunteer Opportunity", new_volunteer_op_path, {:class => 'btn btn-primary'}) %>
-#  <% end %>
-#  <% if current_user %>
-#      <%= link_to "This is my organization", user_report_path(organization_id: @organization.id, id: current_user.id), {method: :put, class: 'btn btn-primary'} if @grabbable %>
-#  <% else %>
-#      <%= link_to "This is my organization", new_user_session_path, {method: :put, 'data-signed_in' => current_user.present?, id: 'TIMO', class: 'btn btn-primary'} if @grabbable %>
-#  <% end %>
