@@ -20,6 +20,8 @@ body {
     background-color: whitesmoke !important;
 }
 
+.angular-google-map-container { height: 400px; }
+
 /* GLOBAL STYLES
 -------------------------------------------------- */
 .page-frame {

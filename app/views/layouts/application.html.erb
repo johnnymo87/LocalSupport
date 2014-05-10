@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='LocalSupport'>
 <head>
   <title><%= content_for?(:title) ? yield(:title) : "Harrow Community Network" %> </title>
+  <!-- As provided by angularjs-rails-cdn -->
+  <%= angularjs_include_tag :google %>
+  <!--this is where the gmaps scripts are added-->
+  <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
-  <!--this is where the gmaps scripts are added-->
   <%= yield :scripts %>
 </head>
 
@@ -28,6 +32,7 @@
               </div>
             </div>
         <% end %>
+        <google-map ng-controller='MapController' center='map.center' zoom='map.zoom'></google-map>
         <div id="content">
           <%= yield %>
         </div>

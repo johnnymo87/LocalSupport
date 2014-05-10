@@ -83,7 +83,7 @@ group :test do
 end
 
 gem 'therubyracer'
-gem 'gmaps4rails'
+gem 'geocoder'
 #gem 'mongrel'
 gem 'kaminari'
 gem 'unicorn'
@@ -94,4 +94,4 @@ gem 'redcarpet'
 # validating organization website URLs
 gem 'url_validator'
 
-
+gem 'angularjs-rails-cdn'
