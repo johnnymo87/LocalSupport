@@ -32,7 +32,9 @@
               </div>
             </div>
         <% end %>
-        <google-map ng-controller='MapController' center='map.center' zoom='map.zoom'></google-map>
+        <div ng-controller='MapController'>
+          <google-map center='map.center' zoom='map.zoom'></google-map>
+        </div>
         <div id="content">
           <%= yield %>
         </div>
