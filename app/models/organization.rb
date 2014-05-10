@@ -12,7 +12,6 @@ class Organization < ActiveRecord::Base
   validates_url :donation_info, :prefferred_scheme => 'http://', :if => Proc.new{|org| org.donation_info.present?}
 
   # http://stackoverflow.com/questions/10738537/lazy-geocoding
-  acts_as_gmappable :check_process => false, :process_geocoding => :run_geocode?
   has_many :users
   has_many :volunteer_ops
   has_and_belongs_to_many :categories
@@ -27,22 +26,6 @@ class Organization < ActiveRecord::Base
   # Difference between inner and outer joins: http://stackoverflow.com/a/38578/2197402
   scope :null_users, lambda { includes(:users).where("users.organization_id IS NULL") }
   scope :without_matching_user_emails, :conditions => "organizations.email NOT IN (#{User.select('email').to_sql})"
-
-  def run_geocode?
-    ## http://api.rubyonrails.org/classes/ActiveModel/Dirty.html
-    address_changed? or (address.present? and not_geocoded?)
-  end
-
-  def not_geocoded?
-    latitude.blank? and longitude.blank?
-  end
-
-  #This method is overridden to save organization if address was failed to geocode
-  def run_validations!
-    run_callbacks :validate
-    remove_errors_with_address
-    errors.empty?
-  end
 
   #TODO: Give this TLC and refactor the flow or refactor out responsibilities
   # This method both adds new editors and/or updates attributes
@@ -171,38 +154,6 @@ class Organization < ActiveRecord::Base
     @@column_mappings.each_value do |column_name|
       unless row.header?(column_name)
         raise CSV::MalformedCSVError, "No expected column with name #{column_name} in CSV file"
-      end
-    end
-  end
-
-  def generate_potential_user
-    password = Devise.friendly_token.first(8)
-    user = User.new(:email => self.email, :password => password)
-    unless user.valid?
-      user.save
-      return user # so that it can be inspected for errors
-    end
-    user.skip_confirmation_notification!
-    user.reset_password_token=(User.reset_password_token)
-    user.reset_password_sent_at=Time.now
-    user.save!
-    user.confirm!
-    user
-  end
-
-  private
-
-  def remove_errors_with_address
-    errors_hash = errors.to_hash
-    errors.clear
-    errors_hash.each do |key, value|
-      logger.warn "#{key} --> #{value}"
-      if key.to_s != 'gmaps4rails_address'
-        errors.add(key, value)
-      else
-        # nullify coordinates
-        self.latitude = nil
-        self.longitude = nil
       end
     end
   end

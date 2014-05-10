@@ -1,7 +1,3 @@
-//= require gmaps/google
-//= require underscore.min
-//= require angular.min
-//= require angular-google-maps.min
 //= require_self
 //= require_tree .
 
@@ -16,5 +12,5 @@ LocalSupport.controller('MapController', ['$scope',
       },
       zoom: 12
     };
-  };
+  }
 ]);
