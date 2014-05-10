@@ -1,7 +1,11 @@
 <!-- Span 6 -->
 <div class="row">
   <div id="column1" class="span6">
-    <%= yield :map %>
+    <div class='map_container'>
+      <div ng-controller='MapController' id='map' class='gmaps4rails_map'>
+        <google-map center='map.center' zoom='map.zoom'></google-map>
+      </div>
+    </div>
   </div>
   <div id="column2" class="span6">
     <%= yield %>
