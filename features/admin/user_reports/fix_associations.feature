@@ -5,21 +5,21 @@ Feature: Fix Associations
 
   Background:
     Given the following users are registered:
-      | email                 | password       | admin | confirmed_at        | organization    | pending_organization |
-      | admin@myorg.com       | adminpass0987  | true  | 2008-01-01 00:00:00 | My Organization |                      |
+      | email           | password      | admin | confirmed_at        | organization    | pending_organization |
+      | admin@myorg.com | adminpass0987 | true  | 2008-01-01 00:00:00 | My Organization |                      |
     Given the following organizations exist:
-      | name     | address          | email |
-      | normal   | 83 pinner road | admin@org.org  |
-      | upcased | 84 pinner road | UPCASED@org.org  |
-      | whitespace    | 30 pinner road | whitespace@charity.org |
+      | name       | address        | email                  |
+      | normal     | 83 pinner road | admin@org.org          |
+      | upcased    | 84 pinner road | UPCASED@org.org        |
+      | whitespace | 30 pinner road | whitespace@charity.org |
     And "whitespace" has a whitespace at the end of the email address
     And the admin invited a user for "normal"
     And the admin invited a user for "upcased"
     And the admin invited a user for "whitespace"
     And associations are destroyed for:
-      | name |
-      | normal |
-      | upcased |
+      | name       |
+      | normal     |
+      | upcased    |
       | whitespace |
 
   # check if the records are in the broken state
@@ -33,8 +33,9 @@ Feature: Fix Associations
     # None will show on the invited users page because we don't show users
     # without associations there
 
-  Scenario: migration
-    Given I run the fix invitations rake task
+  Scenario: Running the rake task to fix the dirty data
+    Given I run "rake db:fix_invites" on the bash command line
+    #Given I run the fix invitations rake task
     Given cookies are approved
     Given I am signed in as an admin
     And I visit the organisations without users page

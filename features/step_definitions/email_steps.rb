@@ -20,6 +20,10 @@ And /^the email queue is clear$/ do
   ActionMailer::Base.deliveries.clear
 end
 
+Given /^I run "(.*?)" on the bash command line$/ do |cmd|
+  `#{cmd}`
+end
+
 Given(/^I run the fix invitations rake task$/) do
   require "rake"
   @rake = Rake::Application.new
