@@ -134,28 +134,28 @@ describe OrganisationsController do
         controller.stub example.metadata.slice(:admin?)
       end
 
-      context admin?: false do
+      context 'normal user, no override, scope', admin?: false do
         it do
           get :index, params
           expect(controller.params[:scopes]).to eq ['order_by_most_recent']
         end
       end
 
-      context admin?: true do
+      context 'admin user, no override, scope', admin?: true do
         it do
           get :index, params
           expect(controller.params[:scopes]).to eq ['order_by_most_recent']
         end
       end
 
-      context admin?: false, scopes: ['hello'] do
+      context 'normal user, override, scope', admin?: false, scopes: ['hello'] do
         it do
           get :index, params
           expect(controller.params[:scopes]).to eq ['order_by_most_recent']
         end
       end
 
-      context admin?: true, scopes: ['hello'] do
+      context 'admin user, override, scope', admin?: true, scopes: ['hello'] do
         it do
           expect(Organisation).to receive(:hello).and_return Organisation.all
           get :index, params
@@ -188,7 +188,9 @@ describe OrganisationsController do
       end
 
       context 'admins' do
+        let!(:org){create(:organisation, email: 'well@hello.there')}
         before do
+
           controller.stub admin?: true
           get :index, service: 'without_users'
         end
@@ -214,7 +216,6 @@ describe OrganisationsController do
           end
 
           it do
-            org = create(:organisation, email: 'well@hello.there')
             expect(assigns(:organisations)).to include org
           end
         end
