@@ -7,6 +7,7 @@ gem 'devise', '3.0.3'
 gem 'devise_invitable', '~> 1.2.1'
 gem 'heroku-api'
 
+gem 'pry'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 

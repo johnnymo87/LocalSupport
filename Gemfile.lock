@@ -175,6 +175,7 @@ GEM
       fattr (>= 2.2.0)
       map (>= 5.1.0)
     map (6.5.5)
+    method_source (0.8.2)
     metric_fu (4.11.1)
       cane (~> 2.5, >= 2.5.2)
       churn (~> 0.0.35)
@@ -205,6 +206,10 @@ GEM
       activerecord (~> 4.0)
     pg (0.17.1)
     phantomjs (1.9.7.1)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -381,6 +386,7 @@ DEPENDENCIES
   newrelic_rpm
   paranoia (~> 2.0)
   pg
+  pry
   rack_session_access
   railroady
   rails (~> 4.1)
