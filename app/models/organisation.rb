@@ -82,14 +82,19 @@ class Organisation < ActiveRecord::Base
   end
 
   def self.filter_by_categories(category_ids)
-    # currently cannot chain union/intersect/except queries
-    # https://github.com/rails/rails/issues/939
-    intersect = category_ids.map do |category_id|
-      "#{joins(:categories).where(category_table[:id].eq(category_id)).to_sql}"
-    end.join(" INTERSECT ")
-    x=from("(#{intersect}) organisations")
-    debugger
-    x
+    subquery = joins(:categories)
+      .where(category_id.in category_ids)
+      .select <<-SQL
+        organisations.*,
+        count(organisation_id) OVER (
+          PARTITION BY organisation_id
+        ) as category_count
+      SQL
+    # at this point, orgs are duplicated for each category they belong to
+    # so we can choose the ones belonging to the right number of categories
+    from("(#{subquery.to_sql}) AS organisations")
+      .where("category_count = #{category_ids.size}")
+      .uniq
   end
 
   def gmaps4rails_marker_attrs
