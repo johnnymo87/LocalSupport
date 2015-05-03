@@ -87,7 +87,7 @@ class Organisation < ActiveRecord::Base
       .select <<-SQL
         organisations.*,
         count(category_id) OVER (
-          PARTITION BY organisation_id
+          PARTITION BY organisations.id
         ) as category_count
       SQL
     # at this point, orgs are duplicated for each category they belong to
