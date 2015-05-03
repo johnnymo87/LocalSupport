@@ -81,6 +81,37 @@ class Organisation < ActiveRecord::Base
      where(contains_description?(keyword).or(contains_name?(keyword)))
   end
 
+  FORMAT = '%Y-%m-%d %H:%M:%S.%N'
+
+  def self.cte_recently_updated_and_has_owner
+    one_year_ago = Time.current.advance(years: -1)
+    recently_updated = "organisations.updated_at > '#{one_year_ago.strftime(FORMAT)}'"
+    cte_table = Arel::Table.new(:cte_table)
+    cte_query = Organisation
+      .joins('LEFT OUTER JOIN users ON users.organisation_id = organisations.id')
+      .select(<<-SQL
+      organisations.*,
+      count(users.organisation_id) OVER (
+        PARTITION BY users.organisation_id
+      ) AS user_count,
+      (
+        CASE WHEN #{recently_updated} THEN TRUE ELSE FALSE END
+      ) AS recently_updated
+    SQL
+    )
+    composed_cte = Arel::Nodes::As.new(cte_table, Arel.sql("(#{cte_query.ast.to_sql})"))
+    table
+      .join(cte_table).on(table[:id].eq(cte_table[:id]))
+      .project(
+        table[Arel.star],
+        Arel::Nodes::SqlLiteral.new(<<-SQL
+          CASE WHEN cte_table.recently_updated AND cte_table.user_count > 0 THEN TRUE ELSE FALSE END
+        SQL
+        ).as('recently_updated_and_has_owner')
+      )
+      .with(composed_cte)
+  end
+
   def self.filter_by_categories(category_ids)
     subquery = joins(:categories)
       .where(category_id.in category_ids)
@@ -93,7 +124,7 @@ class Organisation < ActiveRecord::Base
     # at this point, orgs are duplicated for each category they belong to
     # so we can choose the ones belonging to the right number of categories
     from("(#{subquery.to_sql}) AS organisations")
-      .where("category_count = #{category_ids.size}")
+      .where("organisations.category_count = #{category_ids.size}")
       .uniq
   end
 

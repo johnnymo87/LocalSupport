@@ -677,7 +677,7 @@ describe Organisation, '::filter_by_categories' do
 
     it 'organisations returned by query' do
       expect(
-        Organisation.joins(:users).filter_by_categories([category1.id]).pluck(:id)
+        Queries::Organisations.add_recently_updated_and_has_owner(Organisation.all).filter_by_categories([category1.id]).pluck(:id)
       ).to include(
         org2.id, org3.id
       )
@@ -685,14 +685,14 @@ describe Organisation, '::filter_by_categories' do
 
     it 'no duplicates' do
       expect(
-        Organisation.joins(:users).filter_by_categories([category1.id]).map.size
+        Queries::Organisations.add_recently_updated_and_has_owner(Organisation.all).filter_by_categories([category1.id]).map.size
       ).to eq 2
     end
 
     it 'categories in join table' do
       expect(
         CategoryOrganisation.where(
-          organisation_id: Organisation.joins(:users).filter_by_categories([category1.id]).select(:id)
+          Queries::Organisations.add_recently_updated_and_has_owner(Organisation.all).filter_by_categories([category1.id]).select(:id)
         ).pluck(:category_id).uniq
       ).to include(
         category1.id, category2.id

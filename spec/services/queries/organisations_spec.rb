@@ -125,10 +125,14 @@ describe Queries::Organisations, '::search_by_keyword_and_category' do
     it { expect(run_spec).to include org1, org2, org3 }
   end
 
-  context '#add_computed_recently_updated_and_has_owner' do
-    let(:user1){create(:user)}
-    let(:user2){create(:user, email: "blah@blah.org")}
-    before{org1.update_attributes(updated_at: 2.year.ago); org1.users << user1; org2.users << user2; }
+  context '::add_recently_updated_and_has_owner' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    before do
+      org1.update_attributes(updated_at: 2.year.ago)
+      org1.users << user1
+      org2.users << user2
+    end
     context 'computes correctly when array passed in' do
       it do
         orgs = described_class.add_recently_updated_and_has_owner([org1, org2, org3])
@@ -141,6 +145,7 @@ describe Queries::Organisations, '::search_by_keyword_and_category' do
       it do
         orgs = described_class.add_recently_updated_and_has_owner(Organisation.all)
         orgs.each do |o|
+          puts "\t\t\t\t\t\t\t#{o.name} -- #{o.recently_updated_and_has_owner}"
           case o.name
             when org1.name
               expect(o.recently_updated_and_has_owner).to be false
