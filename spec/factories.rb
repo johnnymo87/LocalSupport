@@ -35,8 +35,12 @@ FactoryGirl.define do
     link_visible true
   end
 
+  sequence :email do |n|
+    "user#{n}@example.com"
+  end
+
   factory :user do
-    email "jj@example.com"
+    email
     password "pppppppp"
     confirmed_at "2007-01-01 10:00:00"
     superadmin false

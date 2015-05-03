@@ -642,6 +642,7 @@ describe Organisation, '::filter_by_categories' do
       :address => '64 pinner road',
       :postcode => 'HA1 3TE',
       :donation_info => 'www.harrow-bereavment.co.uk/donate',
+      :users => [create(:user)],
     )
   end
 
@@ -653,7 +654,8 @@ describe Organisation, '::filter_by_categories' do
       :description => 'Care for the elderly',
       :address => '64 pinner road',
       :postcode => 'HA1 3RE',
-      :donation_info => 'www.indian-elders.co.uk/donate'
+      :donation_info => 'www.indian-elders.co.uk/donate',
+      :users => [create(:user)],
     ).tap { |o| o.categories << category1 ; o.categories << category2 }
   end
 
@@ -666,6 +668,7 @@ describe Organisation, '::filter_by_categories' do
       :address => '64 pinner road',
       :postcode => 'HA1 3RE',
       :donation_info => 'www.age-uk.co.uk/donate',
+      :users => [create(:user)],
     ).tap { |o| o.categories  << category1 }
   end
 
@@ -674,7 +677,7 @@ describe Organisation, '::filter_by_categories' do
 
     it 'organisations returned by query' do
       expect(
-        Organisation.filter_by_categories([category1.id]).pluck(:id)
+        Organisation.joins(:users).filter_by_categories([category1.id]).pluck(:id)
       ).to include(
         org2.id, org3.id
       )
@@ -682,14 +685,14 @@ describe Organisation, '::filter_by_categories' do
 
     it 'no duplicates' do
       expect(
-        Organisation.filter_by_categories([category1.id]).map.size
+        Organisation.joins(:users).filter_by_categories([category1.id]).map.size
       ).to eq 2
     end
 
     it 'categories in join table' do
       expect(
         CategoryOrganisation.where(
-          organisation_id: Organisation.filter_by_categories([category1.id]).select(:id)
+          organisation_id: Organisation.joins(:users).filter_by_categories([category1.id]).select(:id)
         ).pluck(:category_id).uniq
       ).to include(
         category1.id, category2.id
@@ -704,7 +707,7 @@ describe Organisation, '::filter_by_categories' do
 
     it 'organisations returned by query' do
       expect(
-        Organisation.filter_by_categories([
+        Organisation.joins(:users).filter_by_categories([
           category1.id,
           category2.id,
         ]).pluck(:id)
@@ -715,7 +718,7 @@ describe Organisation, '::filter_by_categories' do
 
     it 'no duplicates' do
       expect(
-        Organisation.filter_by_categories([
+        Organisation.joins(:users).filter_by_categories([
           category1.id,
           category2.id,
         ]).map.size
@@ -725,7 +728,7 @@ describe Organisation, '::filter_by_categories' do
     it 'categories in join table' do
       expect(
         CategoryOrganisation.where(
-          organisation_id: Organisation.filter_by_categories([
+          organisation_id: Organisation.joins(:users).filter_by_categories([
             category1.id,
             category2.id,
           ]).select(:id)
