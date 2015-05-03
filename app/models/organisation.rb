@@ -86,7 +86,7 @@ class Organisation < ActiveRecord::Base
       .where(category_id.in category_ids)
       .select <<-SQL
         organisations.*,
-        count(organisation_id) OVER (
+        count(category_id) OVER (
           PARTITION BY organisation_id
         ) as category_count
       SQL
