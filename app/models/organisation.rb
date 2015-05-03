@@ -82,10 +82,14 @@ class Organisation < ActiveRecord::Base
   end
 
   def self.filter_by_categories(category_ids)
-    joins(:categories)
-      .where(category_id.in category_ids)                 # at this point, orgs in multiple categories show up as duplicates
-      .group(organisation_id)                             # so we exploit this
-      .having(organisation_id.count.eq category_ids.size) # and return the orgs with correct number of duplicates
+    # currently cannot chain union/intersect/except queries
+    # https://github.com/rails/rails/issues/939
+    intersect = category_ids.map do |category_id|
+      "#{joins(:categories).where(category_table[:id].eq(category_id)).to_sql}"
+    end.join(" INTERSECT ")
+    x=from("(#{intersect}) organisations")
+    debugger
+    x
   end
 
   def gmaps4rails_marker_attrs
