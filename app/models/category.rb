@@ -7,9 +7,10 @@ class Category < ActiveRecord::Base
   scope :what_they_do,  -> { subcategory(100, 199) }
   scope :who_they_help, -> { subcategory(200, 299) }
   scope :how_they_help, -> { subcategory(300, 399) }
+  scope :ordered, -> { order(name: :asc) }
 
   def self.subcategory(lower, upper)
-    where(charity_commission_id: lower..upper).order(name: :asc)
+    where(charity_commission_id: lower..upper)
   end
 
   @@column_mappings = {
@@ -20,9 +21,9 @@ class Category < ActiveRecord::Base
 
   def self.name_and_id_for_what_who_and_how
     {
-      what: self.what_they_do.pluck(:name, :id),
-      who: self.who_they_help.pluck(:name, :id),
-      how: self.how_they_help.pluck(:name, :id)
+      what: self.what_they_do.ordered.pluck(:name, :id),
+      who: self.who_they_help.ordered.pluck(:name, :id),
+      how: self.how_they_help.ordered.pluck(:name, :id)
     }
 
   end
