@@ -1,0 +1,27 @@
+<p><b> The Following email will be sent when a user is invited: </b></p>
+<div class="well" id="preview_email">
+  <%= render template: 'custom_devise_mailer/invitation_instructions', :locals => { :@resource => User.new } %>
+  <%= link_to 'Edit template', edit_mail_template_path(@mail_template), class: 'btn btn-primary' %>
+</div>
+<table class="table table-hover sortable">
+  <thead>
+  <tr>
+    <th>Organisation</th>
+    <th>Email</th>
+    <th>Time Elapsed</th>
+    <th style="text-align: center;"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @invitations.each do |invitation| %>
+      <tr id="<%= invitation[:id] %>">
+        <td><%= link_to invitation[:name], organisation_path(invitation[:id]) %></td>
+        <td><%= invitation[:email] %></td>
+        <td><%= time_ago_in_words(invitation[:date]) %></td>
+        <td class="response" style="text-align: center;">
+          <input type="checkbox" data-id="<%= invitation[:id] %>" data-email="<%= invitation[:email] %>"/>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

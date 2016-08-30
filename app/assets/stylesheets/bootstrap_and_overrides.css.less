@@ -47,5 +47,19 @@ a:focus {
   color: #009247;
   text-decoration: underline;
 }
+h3 {
+  &:extend(.org_h3);
+}
 
+.alert-warning{
+  color: #7F351C;
+}
+
+.alert-warning a{
+  color: #185000;
+}
+
+.field_with_errors {
+  .control-group.error();
+}
 

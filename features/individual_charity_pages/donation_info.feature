@@ -4,18 +4,13 @@ Feature: Local Resident looking to donate
   I want to find out how I can donate
   Tracker story ID: https://www.pivotaltracker.com/story/show/45392735
 
-Background: organizations have been added to database
-  
-  Given the following organizations exist:
-    | name                            | donation_info                      | address        |
-    | Harrow Bereavement Counselling  | www.harrow-bereavment.co.uk/donate | 34 pinner road |
-    | Indian Elders Associaton        | www.indian-elders.co.uk/donate     | 64 pinner road |
-    | Age UK                          | www.age-uk.co.uk/donate            | 84 pinner road |
-  #adding this to the above table makes the donation_info not be nil.  need to find better solution
-  Given the following organizations exist:
-    |name             | address        |
-    |Friendly Charity | 83 pinner road |
+Background: organisations have been added to database
 
-Scenario: Org page of an organization with donation info URL
-  Given I am on the charity page for "Age UK"
+  Given the following organisations exist:
+    | name     | description             | donation_info           | address        | postcode |
+    | Age UK   | Awesome people          | www.age-uk.co.uk/donate | 84 pinner road | HA1 4HZ  |
+
+@vcr
+Scenario: Org page of an organisation with donation info URL
+  Given I visit the show page for the organisation named "Age UK"
   Then I should see the donation_info URL for "Age UK"

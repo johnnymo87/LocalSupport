@@ -1,11 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Devise::RegistrationsController do
-  before :suite do
-    FactoryGirl.factories.clear
-    FactoryGirl.find_definitions
-  end
-
+describe RegistrationsController, :type => :controller do
   describe "POST create" do
     before :each do
       request.env["devise.mapping"] = Devise.mappings[:user]
@@ -14,12 +9,12 @@ describe Devise::RegistrationsController do
 
     it 'does email confirmation upon registration' do
       expect(ActionMailer::Base.deliveries).to_not be_empty
-      email = ActionMailer::Base.deliveries.last
-      email.subject.should include('Confirmation instructions')
+      subjects = ActionMailer::Base.deliveries.map(&:subject)
+      expect(subjects).to include 'Confirmation instructions'
     end
 
     it 'does not authenticate user' do
-      expect(warden.authenticated?(:user)).to be_false
+      expect(warden.authenticated?(:user)).to be false
     end
 
     it 'redirects to home page after registration form' do
@@ -53,7 +48,7 @@ describe Devise::RegistrationsController do
 
     it 'has an active record error message in the user instance variable when registration fails due to non matching passwords' do
       post :create, 'user' => {'email' => 'example2@example.com', 'password' => 'pppppppp', 'password_confirmation' => 'aaaaaaaaaa'}
-      expect(assigns(:user).errors.full_messages).to include("Password doesn't match confirmation")
+      expect(assigns(:user).errors.full_messages).to include("Password confirmation doesn't match Password")
     end
   end
 end

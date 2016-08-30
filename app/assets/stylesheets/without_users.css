@@ -1,0 +1,45 @@
+table th, table td { overflow: hidden; }
+
+.table-borderless td {
+    border-top: none !important;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #FFFFFF;
+}
+
+#toolbar.affix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#preview_email {
+  font-size: 80%;
+  background-color: white;
+}
+
+a.btn {
+  padding: 3px 9px;
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+
+tr.actions-right > td:last-child {
+  width: 180px;
+}
+
+tr.actions-right .btn {
+  opacity: 0;
+}
+
+tr.actions-right:hover .btn {
+  opacity: 1;
+}
+
+a.btn.pull-right {
+  margin-left: 10px;
+}

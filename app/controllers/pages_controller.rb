@@ -1,44 +1,22 @@
 class PagesController < ApplicationController
   layout 'full_width'
-  # in a method use render layout: "layout"
   before_filter :authorize, :except => :show
 
   # GET /pages
-  # GET /pages.json
-  #TODO Hide all but show and edit
   def index
-    @pages = Page.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @pages }
-    end
+    @pages = Page.order('name ASC')
   end
 
   # GET /pages/:permalink
-  # GET /pages/:permalink.json
   def show
-    @admin = current_user.admin? if current_user
-    begin
-      # find_by_permalink! returns exception if no match
-      @page = Page.find_by_permalink!(params[:id])
-      status_code = 200
-    rescue ActiveRecord::RecordNotFound
-      @page = Page.find_by_permalink!('404')
-      status_code = 404
-    end
-    render :html => @page, :status => status_code
+    @superadmin = current_user.superadmin? if current_user
+    # find_by_permalink! returns exception if no match
+    @page = Page.find_by_permalink!(params[:id])
   end
 
   # GET /pages/new
-  # GET /pages/new.json
   def new
     @page = Page.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @page }
-    end
   end
 
   # GET /pages/:permalink/edit
@@ -47,63 +25,42 @@ class PagesController < ApplicationController
   end
 
   # POST /pages
-  # POST /pages.json
   def create
     @page = Page.new(params[:page])
 
-    respond_to do |format|
-      if @page.save
-        format.html { redirect_to @page, notice: 'Page was successfully created.' }
-        format.json { render json: @page, status: :created, location: @page }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @page.errors, status: :unprocessable_entity }
-      end
+    if @page.save
+      redirect_to @page, notice: 'Page was successfully created.'
+    else
+      render action: 'new'
     end
   end
 
   # PUT /pages/:permalink
-  # PUT /pages/:permalink.json
   def update
     @page = Page.find_by_permalink!(params[:id])
-
-    respond_to do |format|
-      if @page.update_attributes(params[:page])
-        format.html { redirect_to @page, notice: 'Page was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @page.errors, status: :unprocessable_entity }
-      end
+    update_params = PageParams.build params
+    if @page.update_attributes(update_params)
+      redirect_to @page, notice: 'Page was successfully updated.'
+    else
+      render action: 'edit'
     end
   end
 
   # DELETE /pages/:permalink
-  # DELETE /pages/:permalink.json
   def destroy
     @page = Page.find_by_permalink!(params[:id])
     @page.destroy
 
-    respond_to do |format|
-      format.html { redirect_to pages_url }
-      format.json { head :no_content }
+    redirect_to pages_url
+  end
+  class PageParams
+    def self.build params
+      params.require(:page).permit(
+        :content,
+        :name,
+        :permalink,
+        :link_visible
+      )
     end
   end
-
-  private
-
-  # http://railscasts.com/episodes/20-restricting-access
-  def authorize
-    unless admin?
-      flash[:error] = 'unauthorized access'
-      redirect_to '/'
-      false
-    end
-  end
-
-  # Not to be confused with the activerecord admin? method
-  def admin?
-    current_user.present? ? current_user.admin? : false
-  end
-
 end

@@ -7,4 +7,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require_tree .
+//= require underscore
+//= require bootstrap-sortable
+//= require_tree ./global
+//= require bootstrap-switch
+//= require organisations
+//= require analytics
+//= require utilities
+
+window.LocalSupport = {};
+
+$(function() {
+    // invoke global functions here
+});

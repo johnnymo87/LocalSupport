@@ -1,0 +1,7 @@
+<%= simple_format( @mail_template.body ) %>
+
+<p>
+  <%= link_to 'Accept invitation', accept_invitation_url(@resource, :invitation_token => @resource.raw_invitation_token) %>
+</p>
+
+<%= simple_format( @mail_template.footnote ) %>

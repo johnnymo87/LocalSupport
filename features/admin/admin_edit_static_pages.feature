@@ -1,15 +1,17 @@
 Feature: I want to be able to edit static pages
-  As a site admin
+  As a site superadmin
   So that I can update my website
   I want to be able to edit static pages via markdown
   Tracker story ID: https://www.pivotaltracker.com/story/show/52536437
 
-  Background: organizations have been added to database
+  Background: organisations have been added to database
     Given the following pages exist:
-      | name         | permalink  | content |
-      | About Us     | about      | abc123  |
+      | name         | permalink  | content    | link_visible |
+      | About Us     | about      | abc123     | true         |
+      | Wow          | wow        | wow678     | true	      |
+      | Bob          | bob        | bobcontent | true	      |
     And the following users are registered:
-      | email                         | password | admin | confirmed_at         |  organization |
+      | email                         | password | superadmin | confirmed_at         |  organisation |
       | registered-user-1@example.com | pppppppp | true  | 2007-01-01  10:00:00 |  Friendly     |
       | registered-user-2@example.com | pppppppp | false | 2007-01-01  10:00:00 |               |
     And cookies are approved
@@ -31,45 +33,52 @@ Feature: I want to be able to edit static pages
       This _message_ is important too.
       """
 
-  Scenario: Admin can edit
-    Given I am signed in as a admin
-    And I am on the home page
+  Scenario: Super Admin can edit
+    Given I am signed in as a superadmin
+    And I visit the home page
     When I follow "About Us"
     Then I should see a link with text "Edit"
     And I follow "Edit"
     Then I should be on the edit page for "about"
 
-  Scenario: Non-admin cannot edit
-    Given I am signed in as a non-admin
-    And I am on the home page
+  Scenario: Non-superadmin cannot edit
+    Given I am signed in as a non-superadmin
+    And I visit the home page
     When I follow "About Us"
     Then I should not see a link with text "Edit"
 
-  Scenario: Admin can see pages index
-    Given I am signed in as a admin
-    And I am on the home page
+  Scenario: Super Admin can see pages index
+    Given I am signed in as a superadmin
+    And I visit the home page
     When I follow "About Us"
     And I follow "Pages"
     Then the URL should contain "pages"
 
-  Scenario: Non-admin cannot see pages index
-    Given I am signed in as a non-admin
+  Scenario: Pages index is sorted by default
+    Given I am signed in as a superadmin
+    And I visit the home page
+    When I follow "About Us"
+    And I follow "Pages"
+    Then I should see "Bob" page before "Wow"
+
+  Scenario: Non-superadmin cannot see pages index
+    Given I am signed in as a non-superadmin
     And I visit "/pages"
-    Then I should see "unauthorized access"
+    Then I should see "You must be signed in as a superadmin to perform this action!"
     And I should be on the home page
 
   Scenario: Static pages are editable
-    Given I am signed in as a admin
+    Given I am signed in as a superadmin
     And I am on the edit page with the "about" permalink
-    And I fill in "page_name" with "new name"
-    And I fill in "page_permalink" with "new_link"
-    And I fill in "page_content" with "xyz789"
+    And I fill in "page_name" with "new name" within the main body
+    And I fill in "page_permalink" with "new_link" within the main body
+    And I fill in "page_content" with "xyz789" within the main body
     And I press "Update Page"
     And the URL should contain "new_link"
     And I should see "xyz789"
 
   Scenario: Basic markdown syntax works
-    Given I am on the home page
+    Given I visit the home page
     When I follow "Contact"
     Then I should see "significant" < emphasized >
     And I should see "important" < stronged >
