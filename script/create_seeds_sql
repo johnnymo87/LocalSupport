@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "This destroys and recreates your local postgres database with seeded data"
+
+while true; do
+  read -p "Continue? [y/n]:" yn
+
+    case $yn in
+        [Yy]* )
+          echo "Creating seed file from 'rake db:seed'"
+          docker-compose up -d db
+          docker-compose run app rake db:drop db:create db:schema:load db:seed && \
+          docker-compose run app pg_dump -f db/seeds.sql -h db -U postgres --column-inserts -a --exclude-table-data=schema_migrations ls_development;
+          break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
